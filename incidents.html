@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         body {
+            font-family: 'Arial', sans-serif;
+        }
+        .h2{
+            text-align: center;
+        }
+        .navbar-container{
+            display: flex;
+            width: 100%;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            
+        }
+        .navbar-nav{
+            display: flex;
+      
+        }
+        .navbarNav ul{
+            list-style: none;
+
+        }
+
+.dashboard-header {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    
+}
+
+.dashboard-card {
+    display: flex;
+    background: #fff;
+    border: 1px solid #ddd;
+    width: 100%;
+    gap: 20px;
+    padding:32px 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.controls{
+    margin-top: 20px;
+    display: flex;
+    padding: 5px 20px;
+    gap: 20px;
+}
+
+button {
+ display: inline-block;
+ border-radius: 4px;
+ background-color: #3d405b;
+ border: none;
+ color: #FFFFFF;
+ text-align: center;
+ font-size: 17px;
+ padding: 6px;
+ width: 130px;
+ transition: all 0.5s;
+ cursor: pointer;
+ margin: 2px;
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <div class="container-fluid">
+
+        <div class="dashboard-cards">
+            <h4 class="h2">Reports</h4>
+            <div>
+                <button id="load">
+                    load
+                </button>
+            </div>
+            <div class="dashboard-card">
+                <div class="controls">
+                    <div class="report-msg">
+
+                    </div>
+                    <div>
+                        <button id="rd">
+                            Remote Disable
+                        </button>
+                    </div>
+            </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        btn = document.getElementById('load')
+        
+        btn.addEventListener("click", async function () {
+
+    try {
+        const response = await fetch('/getreports',{
+            method: "GET"
+        })
+
+        if(!response){
+            console.log("Failed to get response from server")
+        }
+
+        const ResData = await response.json();
+
+        ReportMsg = ResData.msg
+        document.getElementById('report-msg').innerHTML = Reportmsg;
+        
+    } catch (error) {
+        console.log("Error connecting to the server", error);
+    }
+    });
+    
+
+    btn2 = document.getElementById('rd')
+        
+        btn.addEventListener("click", async function () {
+
+    try {
+        const response = await fetch('/',{
+            method: "POST",
+            headers:{
+                'content-Type': "application/json"
+            },
+            body: JSON.stringify({ 
+                Message: ({
+                    status: "Disabled"
+                })
+            })
+        })
+
+        if(!response){
+            console.log("Failed to get response from server")
+        }
+
+        
+    } catch (error) {
+        console.log("Error connecting to the server", error);
+    }
+    });
+
+    </script>
+
+    
+
+</body>
+</html>
