@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response and Recovery</title>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  min-height: 100vh;
+  background: linear-gradient(90deg, #db2b17 0%, #2219a3 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: "Nunito", sans-serif;
+}
+
+.container {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, 0%);
+}
+
+.input input{
+    outline: none;
+  border: none;
+  background-color: #e1dcdc;
+  width: 100%;
+  font-size: 28px;
+  height: 300px;
+}
+
+button#calculate {
+  font-family: "Nunito", sans-serif;
+  color: #fff;
+  background: #db3434;
+  font-size: 16px;
+  border-radius: 12px;
+  padding: 12px 0;
+  width: 100%;
+  outline: none;
+  border: none;
+  transition: background 0.2s ease;
+}
+button#calculate:hover {
+  background: #342c2c;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+          <h1>Incident Response and Recovery</h1>
+          <div class="content">
+            <div class="input">
+              <label for="weight">Message</label>
+              <input  type="text" id="msg">
+            </div>
+            <button id="calculate">Send Response</button>
+          </div>
+          <div class="result">
+            <div id="result">-</div>
+
+            </p>
+          </div>
+        </div>
+ 
+      </div>
+
+
+
+<script>
+
+    const btn = document.getElementById("calculate");
+
+    btn.addEventListener("click", async function () {
+    let Message = document.querySelector("#msg").value;
+
+
+    try {
+        const response = await fetch('/sendmsg',{
+            method: "POST",
+            headers:{
+                'content-Type': "application/json"
+            },
+            body: JSON.stringify({ 
+                Message: Message
+            })
+        })
+
+        if(!response){
+            console.log("Failed to get response from server")
+        }
+
+        const ResData = await response.json();
+
+        Status = ResData.backmsg
+        document.getElementById('result').innerHTML = Status;
+        
+    } catch (error) {
+        console.log("Error connecting to the server", error);
+    }
+    });
+
+</script>
+
+</body>
+</html>
